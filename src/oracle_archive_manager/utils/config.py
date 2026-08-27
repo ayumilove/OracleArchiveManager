@@ -12,6 +12,8 @@ DEFAULTS = {
     "log_retention_days": 30,
     # P1：控制库 archive_log 自动清理保留天数
     "db_log_retention_days": 90,
+    # 启动时后台检查 GitHub 最新版本（OTA 引导，见 12 §9）
+    "check_updates": True,
 }
 
 

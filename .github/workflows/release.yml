@@ -1,0 +1,70 @@
+# 发布流水线：推送 v* 标签后自动编译 Windows 单文件 exe 并发布 GitHub Release
+# 客户端 OTA 检查依赖该 Release（见 docs/12_RELEASE_DEPLOYMENT.md §8/§9）
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Nuitka 编译 (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      QT_QPA_PLATFORM: offscreen
+      UV_DEFAULT_INDEX: https://pypi.org/simple
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: 安装依赖
+        run: uv sync --frozen
+
+      - name: 注入标签版本号
+        shell: pwsh
+        run: |
+          $v = $env:GITHUB_REF_NAME -replace '^v',''
+          $p = 'src/oracle_archive_manager/__init__.py'
+          $c = Get-Content $p -Raw
+          $c = $c -replace '__version__ = ".*"', ('__version__ = "' + $v + '"')
+          Set-Content $p $c -NoNewline
+          Write-Host "Version -> $v"
+
+      - name: 编译前单元测试
+        run: uv run pytest tests/unit -q
+
+      - name: Nuitka 编译单文件
+        run: >
+          uv run python -m nuitka src/oracle_archive_manager/main.py
+          --standalone --onefile
+          --enable-plugin=pyside6
+          --include-package=oracle_archive_manager
+          --include-data-dir=src/oracle_archive_manager/resources=oracle_archive_manager/resources
+          --windows-console-mode=disable
+          --product-name="Oracle Archive Manager"
+          --assume-yes-for-downloads
+          --remove-output
+          --output-dir=dist
+          --output-filename=OracleArchiveManager.exe
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: OracleArchiveManager-${{ github.ref_name }}
+          path: dist/OracleArchiveManager.exe
+
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/OracleArchiveManager.exe
+          generate_release_notes: true
+          draft: false
+          prerelease: false

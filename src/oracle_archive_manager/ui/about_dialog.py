@@ -1,4 +1,4 @@
-"""关于弹窗：应用信息 + 原则 + 项目链接。"""
+"""关于弹窗：应用信息 + 原则 + 项目链接 + 检查更新。"""
 from __future__ import annotations
 
 from PySide6.QtCore import Qt, QUrl
@@ -7,12 +7,15 @@ from PySide6.QtWidgets import (
     QDialog,
     QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
 
 from .. import __version__
+from ..services.update_checker import has_update
 from .icons import icon
+from .update_dialog import UpdateCheckWorker, UpdateDialog
 
 GITHUB_URL = "https://github.com/ayumilove/OracleArchiveManager"
 
@@ -74,8 +77,29 @@ class AboutDialog(QDialog):
 
         foot = QHBoxLayout()
         foot.addStretch(1)
+        self.btn_check = QPushButton("检查更新")
+        self.btn_check.clicked.connect(self._on_check_update)
+        foot.addWidget(self.btn_check)
         btn_ok = QPushButton("关闭")
         btn_ok.setObjectName("primary")
         btn_ok.clicked.connect(self.accept)
         foot.addWidget(btn_ok)
         lay.addLayout(foot)
+
+    def _on_check_update(self) -> None:
+        self.btn_check.setEnabled(False)
+        self.btn_check.setText("正在检查…")
+        self._check_worker = UpdateCheckWorker(self)
+        self._check_worker.done.connect(self._on_check_done)
+        self._check_worker.start()
+
+    def _on_check_done(self, info) -> None:
+        self.btn_check.setEnabled(True)
+        self.btn_check.setText("检查更新")
+        if info is not None and has_update(__version__, info.latest):
+            UpdateDialog(info, self).exec()
+        elif info is None:
+            QMessageBox.warning(self, "检查更新", "无法连接更新服务，请检查网络后重试。")
+        else:
+            QMessageBox.information(self, "检查更新",
+                                    f"当前已是最新版本（v{__version__}）。")

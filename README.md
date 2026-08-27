@@ -75,3 +75,9 @@
 - Web/B/S
 - 多租户
 - 分布式 Worker
+
+## 6. 构建与发布（CI/CD）
+
+- `push` / PR：GitHub Actions 自动运行单元测试（`.github/workflows/ci.yml`）；
+- `v*.*.*` 标签：自动 Nuitka 编译 Windows 单文件 exe 并发布 GitHub Release（`.github/workflows/release.yml`）；
+- 程序内置自动更新检查（OTA）：启动时对比 GitHub 最新版本，发现新版后引导一键下载安装，见 [`docs/12_RELEASE_DEPLOYMENT.md`](docs/12_RELEASE_DEPLOYMENT.md) §8/§9。

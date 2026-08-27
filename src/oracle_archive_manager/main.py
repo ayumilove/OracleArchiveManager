@@ -6,6 +6,7 @@ import sys
 from loguru import logger
 from PySide6.QtWidgets import QApplication
 
+from . import __version__
 from .app.controller import AppController
 from .services.scheduler import Scheduler
 from .storage.sqlite import ControlDB
@@ -13,6 +14,7 @@ from .ui.icons import icon
 from .ui.main_window import MainWindow
 from .ui.splash import create_splash, splash_msg
 from .ui.theme import apply_theme
+from .ui.update_dialog import start_background_check
 from .utils.config import AppConfig
 from .utils.logging import app_data_dir, setup_logging
 
@@ -24,7 +26,7 @@ def main() -> int:
     app = QApplication(sys.argv)
     apply_theme(app)
     app.setApplicationName("Oracle Archive Manager")
-    app.setApplicationVersion("0.1.0")
+    app.setApplicationVersion(__version__)
     app.setWindowIcon(icon("app"))
 
     splash = create_splash(app, app.applicationVersion())
@@ -43,6 +45,8 @@ def main() -> int:
         window.show()
         splash.finish(window)
         Scheduler(controller, parent=window).start()  # P2：应用内每日定时调度
+        if cfg.get("check_updates"):  # 启动后台检查 GitHub 最新版本（OTA 引导）
+            start_background_check(window, silent=True)
     except Exception:
         splash.close()
         raise

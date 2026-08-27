@@ -17,6 +17,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.3",
+    # CI/CD 发布流水线使用（.github/workflows/release.yml Nuitka 编译）
+    "nuitka>=2.4",
 ]
 
 [build-system]

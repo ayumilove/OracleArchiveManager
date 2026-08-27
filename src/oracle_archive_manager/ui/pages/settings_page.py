@@ -35,8 +35,14 @@ class SettingsPage(QWidget):
         self.chk_thick.setChecked(bool(controller.config.get("thick_mode")))
         self.chk_thick.toggled.connect(lambda v: controller.config.set("thick_mode", v))
         run_body.addWidget(self.chk_thick)
+        self.chk_updates = QCheckBox("启动时自动检查更新")
+        self.chk_updates.setChecked(bool(controller.config.get("check_updates")))
+        self.chk_updates.toggled.connect(
+            lambda v: controller.config.set("check_updates", v))
+        run_body.addWidget(self.chk_updates)
         hint = QLabel(
             "Oracle 11g 必需 Thick Mode；需本机安装 Oracle Client，切换后重启程序生效。"
+            "更新检查仅访问 GitHub 公开接口，不上传任何数据。"
         )
         hint.setObjectName("muted")
         hint.setWordWrap(True)
