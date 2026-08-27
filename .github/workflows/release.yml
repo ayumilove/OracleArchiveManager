@@ -55,8 +55,8 @@ jobs:
           --include-data-dir=src/oracle_archive_manager/resources=oracle_archive_manager/resources
           --windows-console-mode=disable
           --product-name="Oracle Archive Manager"
-          --product-version=${{ env.BUILD_VERSION }}.0.0
-          --file-version=${{ env.BUILD_VERSION }}.0.0
+          --product-version=${{ env.BUILD_VERSION }}
+          --file-version=${{ env.BUILD_VERSION }}
           --assume-yes-for-downloads
           --remove-output
           --output-dir=dist

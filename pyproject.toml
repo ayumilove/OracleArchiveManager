@@ -17,8 +17,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.3",
-    # CI/CD 发布流水线使用（.github/workflows/release.yml Nuitka 编译）
-    "nuitka>=2.4",
+    # CI/CD 发布流水线使用（.github/workflows/release.yml Nuitka 编译）；
+    # onefile 附加包含 zstandard，压缩单文件产物体积
+    "nuitka[onefile]>=2.4",
 ]
 
 [build-system]
