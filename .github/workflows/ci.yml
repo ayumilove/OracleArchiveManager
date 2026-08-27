@@ -16,9 +16,9 @@ jobs:
       # GitHub Runner 直连官方源，避免清华镜像跨境不稳定
       UV_DEFAULT_INDEX: https://pypi.org/simple
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
           enable-cache: true
