@@ -79,10 +79,12 @@ class _NavDelegate(QStyledItemDelegate):
 
 
 def _status_item(icon_name: str, text: str, color: str = "#64748b") -> QWidget:
-    """状态栏分组：小图标 + 文字，带内边距避免拥挤。"""
+    """状态栏分组：圆角浅色胶囊（图标 + 文字），不用分隔线。"""
     w = QWidget()
+    w.setAttribute(Qt.WA_StyledBackground, True)
+    w.setStyleSheet("background:#f3f6fa; border-radius:6px;")
     h = QHBoxLayout(w)
-    h.setContentsMargins(10, 0, 10, 0)
+    h.setContentsMargins(10, 3, 10, 3)
     h.setSpacing(6)
     ic = QLabel()
     ic.setPixmap(icon(icon_name).pixmap(14, 14))
@@ -90,14 +92,6 @@ def _status_item(icon_name: str, text: str, color: str = "#64748b") -> QWidget:
     lbl.setStyleSheet(f"color:{color};")
     h.addWidget(ic)
     h.addWidget(lbl)
-    return w
-
-
-def _status_sep() -> QWidget:
-    """1px 单细线分隔（QFrame VLine 会画出双竖线，太生硬）。"""
-    w = QWidget()
-    w.setFixedSize(1, 16)
-    w.setStyleSheet("background:#e3e8ee;")
     return w
 
 
@@ -173,11 +167,10 @@ class MainWindow(QMainWindow):
             "border-radius:5px; padding:2px 10px; font-weight:600;")
         status.addWidget(ready)
         self.setStatusBar(status)
-        status.addPermanentWidget(_status_sep())
+        if status.layout() is not None:
+            status.layout().setSpacing(8)  # 胶囊组之间的呼吸间距
         status.addPermanentWidget(_status_item("user", f"当前用户：{getpass.getuser()}"))
-        status.addPermanentWidget(_status_sep())
         status.addPermanentWidget(_status_item("database", controller.db.path.name))
-        status.addPermanentWidget(_status_sep())
         status.addPermanentWidget(_status_item("info", "© xcode.im", "#8a94a0"))
 
         # 默认落在首页仪表盘
