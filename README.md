@@ -19,22 +19,24 @@
 
 ## 2. 文档目录
 
+设计与开发文档统一存放在 [`docs/`](docs/)：
+
 | 文件 | 内容 |
 |---|---|
-| `01_PRODUCT_REQUIREMENTS.md` | 产品需求与范围 |
-| `02_ARCHITECTURE_DESIGN.md` | 总体架构设计 |
-| `03_DATA_MODEL.md` | SQLite 控制库数据模型 |
-| `04_ARCHIVE_WORKFLOW.md` | 归档、验证、清理状态机 |
-| `05_ORACLE_STRATEGY.md` | Oracle 11g 数据访问与性能策略 |
-| `06_GUI_DESIGN.md` | PySide6 GUI 页面与交互设计 |
-| `07_SECURITY_SAFETY.md` | 数据安全、权限与防误操作 |
-| `08_DEVELOPMENT_PLAN.md` | 分阶段开发计划 |
-| `09_TODO.md` | 可执行 Todo List |
-| `10_TEST_PLAN.md` | 测试与验收方案 |
-| `11_PROJECT_STRUCTURE.md` | Python 工程目录和模块职责 |
-| `12_RELEASE_DEPLOYMENT.md` | 打包、部署、升级与配置 |
-| `13_OPEN_SOURCE_PLAN.md` | 后续开源策略建议 |
-| `14_DECISIONS.md` | 当前已经确定的技术决策 |
+| [`docs/01_PRODUCT_REQUIREMENTS.md`](docs/01_PRODUCT_REQUIREMENTS.md) | 产品需求与范围 |
+| [`docs/02_ARCHITECTURE_DESIGN.md`](docs/02_ARCHITECTURE_DESIGN.md) | 总体架构设计 |
+| [`docs/03_DATA_MODEL.md`](docs/03_DATA_MODEL.md) | SQLite 控制库数据模型 |
+| [`docs/04_ARCHIVE_WORKFLOW.md`](docs/04_ARCHIVE_WORKFLOW.md) | 归档、验证、清理状态机 |
+| [`docs/05_ORACLE_STRATEGY.md`](docs/05_ORACLE_STRATEGY.md) | Oracle 11g 数据访问与性能策略 |
+| [`docs/06_GUI_DESIGN.md`](docs/06_GUI_DESIGN.md) | PySide6 GUI 页面与交互设计 |
+| [`docs/07_SECURITY_SAFETY.md`](docs/07_SECURITY_SAFETY.md) | 数据安全、权限与防误操作 |
+| [`docs/08_DEVELOPMENT_PLAN.md`](docs/08_DEVELOPMENT_PLAN.md) | 分阶段开发计划 |
+| [`docs/09_TODO.md`](docs/09_TODO.md) | 可执行 Todo List |
+| [`docs/10_TEST_PLAN.md`](docs/10_TEST_PLAN.md) | 测试与验收方案 |
+| [`docs/11_PROJECT_STRUCTURE.md`](docs/11_PROJECT_STRUCTURE.md) | Python 工程目录和模块职责 |
+| [`docs/12_RELEASE_DEPLOYMENT.md`](docs/12_RELEASE_DEPLOYMENT.md) | 打包、部署、升级与配置 |
+| [`docs/13_OPEN_SOURCE_PLAN.md`](docs/13_OPEN_SOURCE_PLAN.md) | 后续开源策略建议 |
+| [`docs/14_DECISIONS.md`](docs/14_DECISIONS.md) | 当前已经确定的技术决策 |
 
 ## 3. V1 核心原则
 
