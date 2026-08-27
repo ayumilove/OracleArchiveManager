@@ -1,0 +1,36 @@
+[project]
+name = "oracle-archive-manager"
+version = "0.1.0"
+description = "Lightweight Oracle historical data archive and safe purge tool (Oracle 11g+)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "PySide6>=6.6",
+    # python-oracledb 官方同源发布名（import oracledb）；
+    # 企业出口策略拦截 python-oracledb 全名，故使用短名安装
+    "oracledb>=2.4",
+    "pydantic>=2.8",
+    "loguru>=0.7.2",
+    "keyring>=25.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oracle_archive_manager"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

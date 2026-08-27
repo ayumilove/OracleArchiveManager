@@ -1,0 +1,23 @@
+{
+  "project": "Oracle Archive Manager",
+  "created": "2026-08-27",
+  "document_count": 16,
+  "files": [
+    "README.md",
+    "01_PRODUCT_REQUIREMENTS.md",
+    "02_ARCHITECTURE_DESIGN.md",
+    "03_DATA_MODEL.md",
+    "04_ARCHIVE_WORKFLOW.md",
+    "05_ORACLE_STRATEGY.md",
+    "06_GUI_DESIGN.md",
+    "07_SECURITY_SAFETY.md",
+    "08_DEVELOPMENT_PLAN.md",
+    "09_TODO.md",
+    "10_TEST_PLAN.md",
+    "11_PROJECT_STRUCTURE.md",
+    "12_RELEASE_DEPLOYMENT.md",
+    "13_OPEN_SOURCE_PLAN.md",
+    "14_DECISIONS.md",
+    "docs/ui_main_window_demo.png"
+  ]
+}
