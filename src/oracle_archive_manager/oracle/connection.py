@@ -3,7 +3,14 @@ from __future__ import annotations
 
 import oracledb
 
+from .client_arch import check_client_arch
+
 _thick_ready = False
+
+_ARCH_HINT = (
+    "常见原因：Oracle Client 为 32 位，与本程序（64 位）不匹配。"
+    "请安装 64 位 Oracle Instant Client 并确保其目录在 PATH 中。"
+)
 
 
 def build_dsn(host: str, port: int, service_name: str) -> str:
@@ -15,6 +22,9 @@ def ensure_thick_mode() -> bool:
     global _thick_ready
     if _thick_ready:
         return True
+    arch_err = check_client_arch()
+    if arch_err:
+        raise RuntimeError(arch_err)
     try:
         oracledb.init_oracle_client()
         _thick_ready = True
@@ -53,8 +63,15 @@ def connect(
     thick: bool = False,
 ):
     """建立连接（调用方负责 close）。"""
-    if thick and not ensure_thick_mode():
-        raise RuntimeError("Thick Mode 初始化失败：未检测到 Oracle Client 库（Oracle 11g 必需）")
+    if thick:
+        try:
+            ok = ensure_thick_mode()
+        except RuntimeError as e:
+            raise RuntimeError(str(e)) from None
+        if not ok:
+            raise RuntimeError(
+                "Thick Mode 初始化失败：未检测到可用的 Oracle Client 库（Oracle 11g 必需）。" + _ARCH_HINT
+            )
     return oracledb.connect(
         user=username, password=password, dsn=build_dsn(host, port, service_name)
     )

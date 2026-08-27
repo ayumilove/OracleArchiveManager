@@ -12,10 +12,11 @@ OracleArchiveManager.exe
 
 ## 2. 客户端要求
 
-- Windows 10/11 64-bit；
+- Windows 10/11 **64-bit**（Qt6 无 32 位发行版，程序固定编译为 x64）；
 - 网络可访问 Source Oracle；
 - 网络可访问 Archive Oracle；
-- Oracle Client（如 Thick Mode 需要）。
+- Oracle Client（如 Thick Mode 需要），**必须为 64 位版本**。
+  客户机若安装的是 32 位 Client，程序在连接前会检测位数不匹配并给出更换指引（`oracle/client_arch.py`）。
 
 ## 3. 本地文件
 

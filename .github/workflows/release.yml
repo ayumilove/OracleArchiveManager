@@ -46,12 +46,12 @@ jobs:
       - name: 编译前单元测试
         run: uv run pytest tests/unit -q
 
-      - name: Nuitka 编译单文件
+      - name: Nuitka 编译单文件（整包编译 + -m 入口，保留相对导入上下文）
         run: >
-          uv run python -m nuitka src/oracle_archive_manager/main.py
+          uv run python -m nuitka src/oracle_archive_manager
           --standalone --onefile
+          --python-flag=-m
           --enable-plugin=pyside6
-          --include-package=oracle_archive_manager
           --include-data-dir=src/oracle_archive_manager/resources=oracle_archive_manager/resources
           --windows-console-mode=disable
           --product-name="Oracle Archive Manager"
@@ -75,3 +75,8 @@ jobs:
           generate_release_notes: true
           draft: false
           prerelease: false
+          body: |
+            ## 运行要求
+
+            - Windows 10/11 **64 位**（本程序为 x64 构建，不支持 32 位系统）；
+            - Thick Mode（Oracle 11g）需安装 **64 位** Oracle Instant Client，程序会在连接前自动检测位数并提示。
