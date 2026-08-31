@@ -16,7 +16,9 @@ jobs:
     timeout-minutes: 60
     env:
       QT_QPA_PLATFORM: offscreen
+      # GitHub Runner 直连官方源，避免清华镜像跨境不稳定及 403 问题
       UV_DEFAULT_INDEX: https://pypi.org/simple
+      UV_INDEX: https://pypi.org/simple
     steps:
       - uses: actions/checkout@v5
 
