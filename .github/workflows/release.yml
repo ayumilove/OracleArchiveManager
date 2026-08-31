@@ -95,3 +95,25 @@ jobs:
 
             - Windows 10/11 **64 位**（本程序为 x64 构建，不支持 32 位系统）；
             - Thick Mode（Oracle 11g）需安装 **64 位** Oracle Instant Client，程序会在连接前自动检测位数并提示。
+
+            ## ⚠️ 杀毒软件误报说明
+
+            本程序由 Nuitka 编译，部分杀毒软件可能将其误报为威胁。这是 Python 打包应用的常见问题，**并非真正的恶意代码**。
+
+            **安全验证：**
+            - ✅ 本程序为**开源软件**，源码完全公开：[GitHub 仓库](https://github.com/ayumilove/OracleArchiveManager)
+            - ✅ 所有构建均在 **GitHub Actions 公开编译**，可自行审查编译日志
+            - ✅ VirusTotal 扫描结果已附于上方，检测均为已知误报模式
+
+            如仍有疑虑，建议自行从源码编译（见下方说明）。
+
+            ## 从源码编译
+
+            需要 Python 3.12+ 和 [uv](https://docs.astral.sh/uv/)：
+
+            ```bash
+            git clone https://github.com/ayumilove/OracleArchiveManager.git
+            cd OracleArchiveManager
+            uv sync
+            uv run python -m nuitka src/oracle_archive_manager --standalone --onefile --python-flag=-m --enable-plugin=pyside6 --windows-icon-from-ico=src/oracle_archive_manager/resources/icons/app.ico --windows-console-mode=disable --output-dir=dist --output-filename=OracleArchiveManager.exe
+            ```

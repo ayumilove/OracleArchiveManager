@@ -66,6 +66,18 @@
 - Windows 10/11；
 - 可访问生产与归档 Oracle 数据库（Oracle 11g 及以上，Thick 模式，需 Oracle Instant Client）。
 
+### ⚠️ 杀毒软件误报说明
+
+本程序由 Nuitka 编译，部分杀毒软件可能将其误报为威胁。这是 Python 打包应用的常见问题，**并非真正的恶意代码**。
+
+**安全验证：**
+
+- 本程序为**开源软件**，源码完全公开，可自行审查；
+- 所有构建均在 **GitHub Actions 公开编译**，编译日志完全透明；
+- 每个 Release 均附带 VirusTotal 扫描结果，检测均为已知误报模式。
+
+如仍有疑虑，建议自行从源码编译（见下方说明）。
+
 ## 从源码运行
 
 需要 Python 3.12+，推荐使用 [uv](https://docs.astral.sh/uv/)：
@@ -80,6 +92,31 @@ uv run oracle-archive-manager
 # 运行单元测试
 uv run pytest
 ```
+
+## 从源码编译
+
+如需自行编译 Windows 单文件 exe：
+
+```bash
+# 克隆仓库
+git clone https://github.com/ayumilove/OracleArchiveManager.git
+cd OracleArchiveManager
+
+# 安装依赖
+uv sync
+
+# 编译单文件 exe
+uv run python -m nuitka src/oracle_archive_manager \
+  --standalone --onefile \
+  --python-flag=-m \
+  --enable-plugin=pyside6 \
+  --windows-icon-from-ico=src/oracle_archive_manager/resources/icons/app.ico \
+  --windows-console-mode=disable \
+  --output-dir=dist \
+  --output-filename=OracleArchiveManager.exe
+```
+
+编译完成后，`dist/OracleArchiveManager.exe` 即为可独立运行的单文件程序。
 
 ## 技术栈
 
