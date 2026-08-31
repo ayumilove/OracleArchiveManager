@@ -46,6 +46,24 @@ jobs:
       - name: 编译前单元测试
         run: uv run pytest tests/unit -q
 
+      - name: 生成 Windows 图标（SVG → 多尺寸 ICO）
+        shell: bash
+        run: |
+          uv pip install cairosvg pillow
+          cat > svg2ico.py << 'PYEOF'
+          import cairosvg, io
+          from PIL import Image
+          sizes = [(16,16),(24,24),(32,32),(48,48),(64,64),(128,128),(256,256)]
+          svg = open('src/oracle_archive_manager/resources/icons/app.svg','rb').read()
+          imgs = []
+          for w,h in sizes:
+              png = cairosvg.svg2png(bytestring=svg, output_width=w, output_height=h)
+              imgs.append(Image.open(io.BytesIO(png)).convert('RGBA'))
+          imgs[0].save('app.ico', format='ICO', sizes=[(i.width,i.height) for i in imgs], append_images=imgs[1:])
+          print('app.ico created')
+          PYEOF
+          python svg2ico.py
+
       - name: Nuitka 编译单文件（整包编译 + -m 入口，保留相对导入上下文）
         run: >
           uv run python -m nuitka src/oracle_archive_manager
@@ -54,9 +72,15 @@ jobs:
           --enable-plugin=pyside6
           --include-data-dir=src/oracle_archive_manager/resources=oracle_archive_manager/resources
           --windows-console-mode=disable
+          --windows-icon-from-ico=app.ico
+          --company-name="Oracle Archive Manager"
           --product-name="Oracle Archive Manager"
+          --file-description="Oracle 历史数据归档与安全管理工具"
           --product-version=${{ env.BUILD_VERSION }}
           --file-version=${{ env.BUILD_VERSION }}
+          --windows-company-name="Oracle Archive Manager"
+          --windows-product-name="Oracle Archive Manager"
+          --windows-file-description="Oracle Archive Manager"
           --assume-yes-for-downloads
           --remove-output
           --output-dir=dist
@@ -67,6 +91,13 @@ jobs:
         with:
           name: OracleArchiveManager-${{ github.ref_name }}
           path: dist/OracleArchiveManager.exe
+
+      - name: VirusTotal 扫描
+        uses: crazy-max/ghaction-virustotal@v4
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: dist/OracleArchiveManager.exe
+          update_release: false
 
       - name: 创建 GitHub Release
         uses: softprops/action-gh-release@v2
