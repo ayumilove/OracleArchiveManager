@@ -62,7 +62,7 @@ jobs:
           imgs[0].save('app.ico', format='ICO', sizes=[(i.width,i.height) for i in imgs], append_images=imgs[1:])
           print('app.ico created')
           PYEOF
-          python svg2ico.py
+          uv run python svg2ico.py
 
       - name: Nuitka 编译单文件（整包编译 + -m 入口，保留相对导入上下文）
         run: >
